@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mark_change"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:id="@+id/titleBar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="#111111">
+
+            <TextView
+                android:id="@+id/backButton2"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="←"
+                android:textColor="#FFFFFF"
+                android:textSize="28sp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="自車・目的地マーク変更"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#444444"/>
+
+
+        <TextView
+            android:id="@+id/changeCcpMarkButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="自車マーク変更"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#111111"
+            android:clickable="true"
+            android:focusable="true" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#444444"/>
+        <TextView
+            android:id="@+id/changeGoalMarkButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="目的地マーク変更"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#111111"
+            android:clickable="true"
+            android:focusable="true" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#444444"/>
+        <TextView
+            android:id="@+id/returnTopButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="Top画面へ戻る"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:gravity="start|center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#111111"
+            android:clickable="true"
+            android:focusable="true" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#444444"/>
+
+    </LinearLayout>
+</FrameLayout>
