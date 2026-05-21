@@ -80,23 +80,5 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#444444"/>
-        <TextView
-            android:id="@+id/returnTopButton"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:text="Top画面へ戻る"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:gravity="start|center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:background="#111111"
-            android:clickable="true"
-            android:focusable="true" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#444444"/>
-
     </LinearLayout>
 </FrameLayout>

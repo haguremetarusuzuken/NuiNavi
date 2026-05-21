@@ -1,9 +1,8 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.util.Log;
 import android.widget.TextView;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -53,9 +52,21 @@ public class ImageSelectActivity extends AppCompatActivity {
     }
 
     private void saveNuiImage(String drawableName) {
+
+        String markType = getIntent().getStringExtra("mark_type");
+        String saveKey;
+
+        if("ccp".equals(markType)) {
+            saveKey = "ccp";
+        } else {
+            saveKey = "goal";
+        }
+        Log.d("NUI_DEBUG","markType is " + markType );
+        Log.d("NUI_DEBUG","saveKey is " + saveKey );
+        Log.d("NUI_DEBUG","drawableName is " + drawableName);
         getSharedPreferences("app_settings", MODE_PRIVATE)
                 .edit()
-                .putString("current_nui", drawableName)
+                .putString(saveKey, drawableName)
                 .apply();
     }
 }

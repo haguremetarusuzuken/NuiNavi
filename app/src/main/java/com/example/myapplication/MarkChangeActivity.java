@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -27,6 +26,7 @@ public class MarkChangeActivity extends AppCompatActivity {
         TextView backButton = findViewById(R.id.backButton2);
         backButton.setOnClickListener(v -> finish());
 
+        /* 自車位置マーク変更ボタン押下時 */
         TextView ccpChangeButton = findViewById(R.id.changeCcpMarkButton);
         ccpChangeButton.setOnClickListener(v -> {
             Intent intent =
@@ -35,18 +35,12 @@ public class MarkChangeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        /* 目的地マーク変更ボタン押下時 */
         TextView goalMarkChangeButton = findViewById(R.id.changeGoalMarkButton);
         goalMarkChangeButton.setOnClickListener(v -> {
             Intent intent =
                     new Intent(this, ImageSelectActivity.class);
             intent.putExtra("mark_type", "goal");
-            startActivity(intent);
-        });
-
-        TextView returnTopButton = findViewById(R.id.returnTopButton);
-        returnTopButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         });
     }

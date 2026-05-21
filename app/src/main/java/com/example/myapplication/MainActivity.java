@@ -1,10 +1,6 @@
 package com.example.myapplication;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -15,18 +11,21 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    LatLng defaultPosition;
+    LatLng defaultCcpPosition;
+    LatLng defaultGoalPosition;
     private MapController mapController;
-    private int selectedNuiResId = R.drawable.koto_nui;
+    private int selectedCcpId;
+    private int selectedGoalId;
 
     public MainActivity(){
-        this.defaultPosition = new LatLng((double)35.68111,(double)139.76667);
+        this.defaultCcpPosition  = new LatLng(35.17098382507305, 136.88154061665807);
+        this.defaultGoalPosition = new LatLng(35.16815568496989, 136.88077921306302);
+        this.selectedCcpId = R.drawable.default_ccp;
+        this.selectedGoalId = R.drawable.default_goalflag;
     }
 
     @Override
@@ -64,46 +63,38 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mapController = new MapController(this,googleMap);
-        mapController.moveToDefaultPosition();
-        String drawableName = getSharedPreferences("app_settings", MODE_PRIVATE)
-                .getString("current_nui", "koto_nui");
+        mapController.moveToDefaultPosition(defaultCcpPosition);
 
-        reloadSelectedNui();
-
-        int nuiResId = getResources().getIdentifier(
-                drawableName,
-                "drawable",
-                getPackageName()
-        );
-        mapController.showCcpMarker(this.defaultPosition.latitude, this.defaultPosition.longitude, nuiResId);
+        mapController.showCcpMarker(defaultCcpPosition);
+        mapController.showGoalMarker(defaultGoalPosition);
     }
-    private int loadSelectedNuiImage() {
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /* onMapReadyコールされるまでは実施しない */
+        if (mapController != null) {
+            reloadSelectedImage();
+        }
+    }
+
+    private void reloadSelectedImage() {
+        selectedCcpId  = loadSelectedImage("ccp","default_ccp");
+        selectedGoalId = loadSelectedImage("goal","default_goalflag");
+        if (mapController != null) {
+            mapController.updateCcpMarkerIcon(selectedCcpId);
+            mapController.updateGoalMarkerIcon(selectedGoalId);
+        }
+    }
+
+    private int loadSelectedImage(String key, String defaultDrawableName){
         String drawableName = getSharedPreferences("app_settings", MODE_PRIVATE)
-                .getString("current_nui", "koto_nui");
+                .getString(key, defaultDrawableName);
 
         return getResources().getIdentifier(
                 drawableName,
                 "drawable",
                 getPackageName()
         );
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("NUI_DEBUG", "MainActivity onResume");
-        reloadSelectedNui();
-    }
-
-    private void reloadSelectedNui() {
-        Log.d("NUI_DEBUG", "reloadSelectedNui called");
-        selectedNuiResId = loadSelectedNuiImage();
-
-        Log.d("NUI_DEBUG", "selectedNuiResId = " + selectedNuiResId);
-        Log.d("NUI_DEBUG", "mapController = " + mapController);
-
-        if (mapController != null) {
-            mapController.updateCcpMarkerIcon(selectedNuiResId);
-        }
     }
 }
