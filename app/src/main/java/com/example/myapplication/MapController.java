@@ -16,40 +16,58 @@ public class MapController {
     private final Context context;
     private final GoogleMap googleMap;
     private Marker ccpMarker;
+    private Marker goalMarker;
 
     public MapController(Context context,GoogleMap googleMap){
         this.googleMap = googleMap;
         this.context = context;
     }
 
-    public void moveToDefaultPosition(){
-        LatLng position = new LatLng(35.681236, 139.767125);
+    public void moveToDefaultPosition(LatLng position){
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
     }
-    public void moveToCurrentPosition(double lat, double lng) {
-        LatLng current = new LatLng(lat, lng);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 17));
-    }
-    public void showCcpMarker(double lat, double lng, int nuiResId) {
-        LatLng position = new LatLng(lat, lng);
 
+    public void moveToCurrentPosition(LatLng position) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 17));
+    }
+
+    public void showCcpMarker(LatLng position) {
         if (ccpMarker == null) {
             ccpMarker = googleMap.addMarker(new MarkerOptions()
                     .position(position)
-                    .icon(createSmallMarkerIcon(nuiResId,456,256))
+                    .icon(createSmallMarkerIcon(R.drawable.default_ccp, 192, 192))
                     .anchor(0.5f, 0.5f)
                     .title("CCP"));
         } else {
             ccpMarker.setPosition(position);
-            ccpMarker.setIcon(createSmallMarkerIcon(nuiResId, 456, 256));
+            ccpMarker.setIcon(createSmallMarkerIcon(R.drawable.default_ccp, 192, 192));
+        }
+    }
+    public void showGoalMarker(LatLng position) {
+        if (goalMarker == null) {
+            goalMarker = googleMap.addMarker(new MarkerOptions()
+                    .position(position)
+                    .icon(createSmallMarkerIcon(R.drawable.default_goalflag, 192, 192))
+                    .anchor(0.5f, 1.0f)
+                    .title("GOAL"));
+        } else {
+            goalMarker.setPosition(position);
+            goalMarker.setIcon(createSmallMarkerIcon(R.drawable.default_goalflag, 192, 192));
         }
     }
 
-    public void updateCcpMarkerIcon(int nuiResId) {
+    public void updateCcpMarkerIcon(int ccpResId) {
         if (ccpMarker != null) {
-            ccpMarker.setIcon(createSmallMarkerIcon(nuiResId, 456, 256));
+            ccpMarker.setIcon(createSmallMarkerIcon(ccpResId, 192, 192));
         }
     }
+
+    public void updateGoalMarkerIcon(int goalResId) {
+        if (goalMarker != null) {
+            goalMarker.setIcon(createSmallMarkerIcon(goalResId, 192, 192));
+        }
+    }
+
     private BitmapDescriptor createSmallMarkerIcon(int resId, int width, int height) {
         Bitmap original = BitmapFactory.decodeResource(
                 context.getResources(),
