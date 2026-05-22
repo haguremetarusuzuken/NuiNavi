@@ -181,4 +181,23 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#444444"/>
+
+    <TextView
+        android:id="@+id/default_ccp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:text="デフォルト画像へ変更"/>
+    <TextView
+        android:id="@+id/default_goalflag"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:text="デフォルト画像へ変更"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#444444"/>
 </LinearLayout>
