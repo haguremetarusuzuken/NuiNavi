@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class OptionActivity extends AppCompatActivity {
 
     @Override
+    /* オプション画面Create */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -23,9 +24,11 @@ public class OptionActivity extends AppCompatActivity {
             return insets;
         });
 
+        /* 戻るボタンリスナー */
         TextView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
 
+        /* 自車位置・目的地マーク変更ボタンリスナー */
         TextView ChangeButton = findViewById(R.id.changeCcpAndGoalMarkButton);
         ChangeButton.setOnClickListener(v -> {
             Intent intent =
