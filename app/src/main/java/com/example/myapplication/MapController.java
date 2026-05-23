@@ -22,15 +22,18 @@ public class MapController {
     /* 目的地マーク描画座標 */
     private Marker goalMarker;
 
+    private static final int MARKER_WIDTH_SIZE = 192;
+    private static final int MARKER_HEIGHT_SIZE = 192;
+
     /* MapContollerコンストラクタ */
-    public MapController(Context context,GoogleMap googleMap){
+    public MapController(Context context, GoogleMap googleMap) {
         this.googleMap = googleMap;
         this.context = context;
     }
 
     /* デフォルト自車位置遷移処理 */
     /* ToDo:マジックナンバー使わないようにしたい。 */
-    public void moveToDefaultPosition(LatLng position){
+    public void moveToDefaultPosition(LatLng position) {
         this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
     }
 
@@ -41,47 +44,64 @@ public class MapController {
     }
 
     /* 自車位置描画処理 */
-    /* ToDo:マジックナンバー使わないようにしたい。 */
-    public void showCcpMarker(LatLng position) {
+    public void showCcpMarker(LatLng position, int ccpResId) {
         if (this.ccpMarker == null) {
-            this.ccpMarker = this.googleMap.addMarker(new MarkerOptions()
-                       .position(position)
-                        .icon(createSmallMarkerIcon(R.drawable.default_ccp, 192, 192))
-                        .anchor(0.5f, 0.5f)
-                        .title("CCP"));
+            createMarker(position, ccpResId, "ccp");
         } else {
-            this.ccpMarker.setPosition(position);
-            this.ccpMarker.setIcon(createSmallMarkerIcon(R.drawable.default_ccp, 192, 192));
+            updateMarker(position, ccpResId, "ccp");
+            updateMarkerIcon(position, ccpResId, "ccp");
         }
     }
     /* 目的地描画処理 */
-    /* ToDo:マジックナンバー使わないようにしたい。 */
-    public void showGoalMarker(LatLng position) {
+    public void showGoalMarker(LatLng position, int goalResId) {
         if (this.goalMarker == null) {
-            this.goalMarker = this.googleMap.addMarker(new MarkerOptions()
-                        .position(position)
-                        .icon(createSmallMarkerIcon(R.drawable.default_goalflag, 192, 192))
-                        .anchor(0.5f, 1.0f)
-                        .title("GOAL"));
+            createMarker(position, goalResId, "goal");
         } else {
+            updateMarker(position, goalResId, "goal");
+            updateMarkerIcon(position, goalResId, "goal");
+        }
+    }
+
+    /* 自車・目的地マーク生成 */
+    private void createMarker(LatLng position, int resId, String markType) {
+        if ("ccp".equals(markType)) {
+            this.ccpMarker = this.googleMap.addMarker(new MarkerOptions()
+                    .position(position)
+                    .icon(createSmallMarkerIcon(resId, MARKER_WIDTH_SIZE, MARKER_HEIGHT_SIZE))
+                    .anchor(0.5f, 0.5f)
+                    .title("CCP"));
+        } else if ("goal".equals(markType)) {
+            this.goalMarker = this.googleMap.addMarker(new MarkerOptions()
+                    .position(position)
+                    .icon(createSmallMarkerIcon(resId,MARKER_WIDTH_SIZE, MARKER_HEIGHT_SIZE))
+                    .anchor(0.5f, 1.0f)
+                    .title("GOAL"));
+        } else {
+            /* 処理なし */
+        }
+    }
+
+    /* 自車・目的地マーク更新 */
+    /* API引数統一のため未使用引数含む */
+    private void updateMarker(LatLng position, int resId, String markType) {
+        if ("ccp".equals(markType)) {
+            this.ccpMarker.setPosition(position);
+        } else if ("goal".equals(markType)) {
             this.goalMarker.setPosition(position);
-            this.goalMarker.setIcon(createSmallMarkerIcon(R.drawable.default_goalflag, 192, 192));
+        } else {
+            /* 処理なし */
         }
     }
 
-    /* 自車位置描画更新処理 */
-    /* ToDo:マジックナンバー使わないようにしたい。 */
-    public void updateCcpMarkerIcon(int ccpResId) {
-        if (this.ccpMarker != null) {
-            this.ccpMarker.setIcon(createSmallMarkerIcon(ccpResId, 192, 192));
-        }
-    }
-
-    /* 目的地描画更新処理 */
-    /* ToDo:マジックナンバー使わないようにしたい。 */
-    public void updateGoalMarkerIcon(int goalResId) {
-        if (this.goalMarker != null) {
-            this.goalMarker.setIcon(createSmallMarkerIcon(goalResId, 192, 192));
+    /* 自車・目的地マーク画像更新 */
+    /* API引数統一のため未使用引数含む */
+    private void updateMarkerIcon(LatLng position, int resId, String markType) {
+        if ("ccp".equals(markType)) {
+            this.ccpMarker.setIcon(createSmallMarkerIcon(resId, MARKER_WIDTH_SIZE, MARKER_HEIGHT_SIZE));
+        } else if ("goal".equals(markType)) {
+            this.goalMarker.setIcon(createSmallMarkerIcon(resId, MARKER_WIDTH_SIZE, MARKER_HEIGHT_SIZE));
+        } else {
+            /* 処理なし */
         }
     }
 

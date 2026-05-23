@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,6 +26,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private int selectedCcpId;
     /* 選択目的地マークID */
     private int selectedGoalId;
+
+    /* 自車位置座標(GPS測位後) */
+    /* ToDo:GPS機能のための仮実装 */
+    LatLng gpsCcpPosition;
+    /* 目的地座標(GPS測位後) */
+    /* ToDo:GPS機能のための仮実装 */
+    LatLng gpsGoalPosition;
 
     /* MainActivityコンストラクタ */
     public MainActivity(){
@@ -81,15 +89,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     /* GoogleMap準備完了(非同期) */
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         /* ToDo:本来は現在地測位してからccp移動させるのが本来のナビアプリ */
         /* ToDo:ユーザーへの権利許諾もとる必要あり。 */
         this.mapController = new MapController(this,googleMap);
         this.mapController.moveToDefaultPosition(defaultCcpPosition);
 
-        this.mapController.showCcpMarker(defaultCcpPosition);
+        /* 前回画像設定があれば読み出す */
+        int ccpResId  = loadSelectedImage("ccp","default_ccp");
+        int goalResId = loadSelectedImage("goal","default_goalflag");
+
+        this.mapController.showCcpMarker(defaultCcpPosition,ccpResId);
         /* ToDo:デフォルトで目的地描画しているが、将来的に不要の認識 */
-        this.mapController.showGoalMarker(defaultGoalPosition);
+        this.mapController.showGoalMarker(defaultGoalPosition,goalResId);
     }
 
     @Override
@@ -107,8 +119,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.selectedCcpId  = loadSelectedImage("ccp","default_ccp");
         this.selectedGoalId = loadSelectedImage("goal","default_goalflag");
         if (mapController != null) {
-            this.mapController.updateCcpMarkerIcon(this.selectedCcpId);
-            this.mapController.updateGoalMarkerIcon(this.selectedGoalId);
+            /* 現在地をとるべき */
+            this.mapController.showCcpMarker(defaultCcpPosition,selectedCcpId);
+            this.mapController.showGoalMarker(defaultGoalPosition,selectedGoalId);
         }
     }
 
