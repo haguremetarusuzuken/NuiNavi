@@ -1,11 +1,14 @@
 package com.example.myapplication;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -30,16 +33,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     /* 自車位置座標(GPS測位後) */
     /* ToDo:GPS機能のための仮実装 */
     LatLng gpsCcpPosition;
-    /* 目的地座標(GPS測位後) */
-    /* ToDo:GPS機能のための仮実装 */
-    LatLng gpsGoalPosition;
+
+    LocationController locationController;
 
     /* MainActivityコンストラクタ */
     public MainActivity(){
         /* デフォルト自車位置は名古屋駅 */
         this.defaultCcpPosition  = new LatLng(35.17098382507305, 136.88154061665807);
-        /* デフォルト目的地はアニメイト名古屋店 */
-        this.defaultGoalPosition = new LatLng(35.16815568496989, 136.88077921306302);
+        /* デフォルト目的地は北京飯店 */
+        this.defaultGoalPosition = new LatLng(34.96799882997405, 137.05912821432906);
         /* デフォルト選択自車マークID */
         this.selectedCcpId = R.drawable.default_ccp;
         /* デフォルト選択目的地マークID */
@@ -102,6 +104,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.mapController.showCcpMarker(defaultCcpPosition,ccpResId);
         /* ToDo:デフォルトで目的地描画しているが、将来的に不要の認識 */
         this.mapController.showGoalMarker(defaultGoalPosition,goalResId);
+
+        this.locationController = new LocationController(this);
+        /* 現在地取得処理 */
+        this.fetchCurrentLocation();
     }
 
     @Override
@@ -120,8 +126,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.selectedGoalId = loadSelectedImage("goal","default_goalflag");
         if (mapController != null) {
             /* 現在地をとるべき */
-            this.mapController.showCcpMarker(defaultCcpPosition,selectedCcpId);
-            this.mapController.showGoalMarker(defaultGoalPosition,selectedGoalId);
+            if( gpsCcpPosition != null ){
+                this.mapController.showCcpMarker(gpsCcpPosition, selectedCcpId);
+                this.mapController.showGoalMarker(defaultGoalPosition, selectedGoalId);
+            } else {
+                this.mapController.showCcpMarker(defaultCcpPosition, selectedCcpId);
+                this.mapController.showGoalMarker(defaultGoalPosition, selectedGoalId);
+            }
         }
     }
 
@@ -135,5 +146,47 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "drawable",
                 getPackageName()
         );
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1001
+                && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            this.fetchCurrentLocation();
+        }
+    }
+
+    private void fetchCurrentLocation() {
+        if (this.mapController == null || this.locationController == null) {
+            return;
+        }
+
+        if (!locationController.hasLocationPermission()) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    1001
+            );
+            return;
+        }
+
+        locationController.requestCurrentLocation(location -> {
+            if (location == null) {
+                return;
+            }
+
+            gpsCcpPosition = new LatLng(location.getLatitude(), location.getLongitude());
+
+            int ccpResId = loadSelectedImage("ccp", "default_ccp");
+            mapController.moveToCurrentPosition(gpsCcpPosition);
+            mapController.showCcpMarker(gpsCcpPosition, ccpResId);
+        });
     }
 }
