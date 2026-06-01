@@ -40,7 +40,7 @@ public class MapController {
     /* 現在地測位時自車位置遷移処理 */
     /* ToDo:マジックナンバー使わないようにしたい。 */
     public void moveToCurrentPosition(LatLng position) {
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 17));
+        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
     }
 
     /* 自車位置描画処理 */

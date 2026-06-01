@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     /* 選択目的地マークID */
     private int selectedGoalId;
 
+    /* 位置情報権限要求リクエストID */
+    private static final int REQUEST_LOCATION_PERMISSION = 1001;
     /* 自車位置座標(GPS測位後) */
     /* ToDo:GPS機能のための仮実装 */
     LatLng gpsCcpPosition;
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == 1001
+        if (requestCode == REQUEST_LOCATION_PERMISSION
                 && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             this.fetchCurrentLocation();
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             ActivityCompat.requestPermissions(
                     this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    1001
+                    REQUEST_LOCATION_PERMISSION
             );
             return;
         }
