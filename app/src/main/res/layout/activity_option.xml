@@ -24,7 +24,7 @@
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="←"
+                android:text="@string/backButton"
                 android:textColor="#FFFFFF"
                 android:textSize="28sp"
                 android:clickable="true"
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="オプション"
+                android:text="@string/settings"
                 android:textColor="#FFFFFF"
                 android:textSize="28sp" />
 
@@ -49,7 +49,7 @@
             android:id="@+id/changeCcpAndGoalMarkButton"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:text="自車・目的地マーク変更"
+            android:text="@string/markSelect"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:gravity="start|center_vertical"

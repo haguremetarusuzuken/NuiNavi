@@ -19,7 +19,7 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="←"
+            android:text="@string/backButton"
             android:textColor="#FFFFFF"
             android:textSize="28sp"
             android:clickable="true"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="ぬいを選択してください"
+            android:text="@string/nuiSelect"
             android:textColor="#FFFFFF"
             android:textSize="24sp" />
 
@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
-                android:text="さきぬい" />
+                android:text="@string/saki_nui" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
-                android:text="てまぬい" />
+                android:text="@string/tema_nui" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
-                android:text="ことぬい" />
+                android:text="@string/koto_nui" />
         </LinearLayout>
     </GridLayout>
     <View
@@ -136,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
-                android:text="ちなぬい" />
+                android:text="@string/tina_nui" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -155,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
-                android:text="ひろぬい" />
+                android:text="@string/hiro_nui" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -174,7 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
-                android:text="みすぬい" />
+                android:text="@string/misu_nui" />
         </LinearLayout>
     </GridLayout>
     <View
@@ -188,14 +188,14 @@
         android:layout_height="80dp"
         android:textColor="#FFFFFF"
         android:gravity="center"
-        android:text="デフォルト画像へ変更"/>
+        android:text="@string/defaultBackButton"/>
     <TextView
         android:id="@+id/default_goalflag"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:textColor="#FFFFFF"
         android:gravity="center"
-        android:text="デフォルト画像へ変更"/>
+        android:text="@string/defaultBackButton"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

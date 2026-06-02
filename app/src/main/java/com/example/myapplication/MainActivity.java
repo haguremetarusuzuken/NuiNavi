@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     /* debugPanelクラス */
     private DebugPanelController debugPanelController;
 
+    /* debug機能有効フラグ */
+    public static final boolean DEBUG_MAINACTIVITY_PANEL_ENABLED = DebugPanelController.DEBUG_PANEL_ENABLED;
 
     /* MainActivityコンストラクタ */
     public MainActivity(){
@@ -80,15 +82,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             startActivity(intent);
         });
 
-        /* debugPanel情報準備 */
-        this.debugPanelController = new DebugPanelController(findViewById(R.id.debugPanel),findViewById(R.id.debugText));
+        /* debug機能有効時のみ */
+        if( DEBUG_MAINACTIVITY_PANEL_ENABLED ) {
+            /* debugPanel情報準備 */
+            this.debugPanelController = new DebugPanelController(findViewById(R.id.debugPanel), findViewById(R.id.debugText));
 
-        /* debugボタンリスナー */
-        Button debugButton = findViewById(R.id.debugButton);
+            /* debugボタンリスナー */
+            Button debugButton = findViewById(R.id.debugButton);
 
-        debugButton.setOnClickListener(v -> {
-            this.debugPanelController.toggle();
-        });
+            debugButton.setOnClickListener(v -> {
+                this.debugPanelController.toggle();
+            });
+        }
     }
 
     /* GoogleMap描画準備初期化 */
@@ -125,18 +130,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         /* 現在地取得処理 */
         this.fetchCurrentLocation();
 
-        /* onMapReady Debug */
-        debugPanelController.updateDebugInfo(
-                "onMapReady",
-                gpsCcpPosition,
-                locationController,
-                selectedCcpId,
-                getSharedPreferences("app_settings", MODE_PRIVATE)
-                        .getString("ccp", "default_ccp"),
-                selectedGoalId,
-                getSharedPreferences("app_settings", MODE_PRIVATE)
-                        .getString("goal", "defaul_goalflag")
-        );
+        /* debug機能有効時のみ */
+        if( DEBUG_MAINACTIVITY_PANEL_ENABLED ) {
+            /* onMapReady Debug */
+            debugPanelController.updateDebugInfo(
+                    "onMapReady",
+                    gpsCcpPosition,
+                    locationController,
+                    selectedCcpId,
+                    getSharedPreferences("app_settings", MODE_PRIVATE)
+                            .getString("ccp", "default_ccp"),
+                    selectedGoalId,
+                    getSharedPreferences("app_settings", MODE_PRIVATE)
+                            .getString("goal", "defaul_goalflag")
+            );
+        }
     }
 
     @Override
@@ -148,18 +156,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             this.reloadSelectedImage();
         }
 
-        /* onResume Debug */
-        debugPanelController.updateDebugInfo(
-                "onResume",
-                gpsCcpPosition,
-                locationController,
-                selectedCcpId,
-                getSharedPreferences("app_settings", MODE_PRIVATE)
-                        .getString("ccp", "default_ccp"),
-                selectedGoalId,
-                getSharedPreferences("app_settings", MODE_PRIVATE)
-                        .getString("goal", "defaul_goalflag")
-        );
+        /* debug機能有効時のみ */
+        if( DEBUG_MAINACTIVITY_PANEL_ENABLED ) {
+            /* onResume Debug */
+            debugPanelController.updateDebugInfo(
+                    "onResume",
+                    gpsCcpPosition,
+                    locationController,
+                    selectedCcpId,
+                    getSharedPreferences("app_settings", MODE_PRIVATE)
+                            .getString("ccp", "default_ccp"),
+                    selectedGoalId,
+                    getSharedPreferences("app_settings", MODE_PRIVATE)
+                            .getString("goal", "defaul_goalflag")
+            );
+        }
     }
 
     private void reloadSelectedImage() {

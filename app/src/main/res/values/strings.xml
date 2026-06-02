@@ -1,6 +1,18 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="appName">ぬいナビ</string>
     <string name="settings">設定</string>
     <string name="debug">debug</string>
-    <string name="total_distance">累計走行距離：0.0 km</string>
+    <string name="totalDistance">累計走行距離：0.0 km</string>
+    <string name="nuiSelect">ぬいを選択してください</string>
+    <string name="backButton">←</string>
+    <string name="markSelect">自車・目的地マーク変更</string>
+    <string name="ccpMarkSelect">自車マーク変更</string>
+    <string name="goalMarkSelect">目的地マーク変更</string>
+    <string name="saki_nui">さきぬい</string>
+    <string name="tema_nui">てまぬい</string>
+    <string name="koto_nui">ことぬい</string>
+    <string name="tina_nui">ちなぬい</string>
+    <string name="hiro_nui">ひろぬい</string>
+    <string name="misu_nui">みすぬい</string>
+    <string name="defaultBackButton">デフォルト画像へ変更</string>
 </resources>

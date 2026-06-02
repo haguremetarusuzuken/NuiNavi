@@ -8,23 +8,33 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class DebugPanelController {
 
+    /* debugPanelオブジェクト */
     private final LinearLayout debugPanel;
 
+    /* debugTextオブジェクト */
     private final TextView debugText;
 
+    /* debugPanel表示フラグ */
     private boolean visible = false;
+
+    /* debug機能有効フラグ */
+    public static final boolean DEBUG_PANEL_ENABLED = true;
 
     /* debugPanelControllerコンストラクタ */
     public DebugPanelController(LinearLayout debugPanel,TextView debugText) {
-        this.debugPanel = debugPanel;
-        this.debugText  = debugText;
-        this.debugPanel.setVisibility(View.GONE);
+        if( DEBUG_PANEL_ENABLED ) {
+            this.debugPanel = debugPanel;
+            this.debugText = debugText;
+            this.debugPanel.setVisibility(View.GONE);
+        }
     }
 
     /* debugPanel表示切替 */
     public void toggle() {
-        this.visible = !this.visible;
-        this.debugPanel.setVisibility(this.visible ? View.VISIBLE : View.GONE);
+        if( DEBUG_PANEL_ENABLED ) {
+            this.visible = !this.visible;
+            this.debugPanel.setVisibility(this.visible ? View.VISIBLE : View.GONE);
+        }
     }
 
     /* debugPanel表示内容設定・更新 */
@@ -42,16 +52,18 @@ public class DebugPanelController {
             return;
         }
 
-        debugText.setText(
-                "EVENT : " + eventName +
-                        "\nGPS : " + gpsCcpPosition +
-                        "\nPermission : " + locationController.hasLocationPermission() +
-                        "\nCCP : " +
-                        "\n\tccpId : " + selectedCcpId +
-                        "\n\tccpImageName : " + selectedCcpImageName +
-                        "\nGOAL : " +
-                        "\n\tgoalId : " + selectedGoalId +
-                        "\n\tgoalImageId : " + selectedGoalImageName
-        );
+        if( DEBUG_PANEL_ENABLED ){
+            debugText.setText(
+                    "EVENT : " + eventName +
+                  "\nGPS : " + gpsCcpPosition +
+                  "\nPermission : " + locationController.hasLocationPermission() +
+                  "\nCCP : " +
+                  "\n\tccpId : " + selectedCcpId +
+                  "\n\tccpImageName : " + selectedCcpImageName +
+                  "\nGOAL : " +
+                  "\n\tgoalId : " + selectedGoalId +
+                  "\n\tgoalImageId : " + selectedGoalImageName
+            );
+        }
     }
 }
