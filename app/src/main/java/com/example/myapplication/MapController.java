@@ -22,8 +22,12 @@ public class MapController {
     /* 目的地マーク描画座標 */
     private Marker goalMarker;
 
+    /* マーカーサイズデフォルト描画サイズ値 */
     private static final int MARKER_WIDTH_SIZE = 192;
     private static final int MARKER_HEIGHT_SIZE = 192;
+
+    /* 地図ズームデフォルト値 */
+    private static final int DEFAULT_MAP_ZOOM_VALUE = 18;
 
     /* MapContollerコンストラクタ */
     public MapController(Context context, GoogleMap googleMap) {
@@ -34,13 +38,13 @@ public class MapController {
     /* デフォルト自車位置遷移処理 */
     /* ToDo:マジックナンバー使わないようにしたい。 */
     public void moveToDefaultPosition(LatLng position) {
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
+        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_MAP_ZOOM_VALUE));
     }
 
     /* 現在地測位時自車位置遷移処理 */
     /* ToDo:マジックナンバー使わないようにしたい。 */
     public void moveToCurrentPosition(LatLng position) {
-        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15));
+        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_MAP_ZOOM_VALUE));
     }
 
     /* 自車位置描画処理 */
@@ -65,12 +69,14 @@ public class MapController {
     /* 自車・目的地マーク生成 */
     private void createMarker(LatLng position, int resId, String markType) {
         if ("ccp".equals(markType)) {
+            /* TODO:いったんZOOM固定したまま。ユーザー操作値を保持して渡すべき。 */
             this.ccpMarker = this.googleMap.addMarker(new MarkerOptions()
                     .position(position)
                     .icon(createSmallMarkerIcon(resId, MARKER_WIDTH_SIZE, MARKER_HEIGHT_SIZE))
                     .anchor(0.5f, 0.5f)
                     .title("CCP"));
         } else if ("goal".equals(markType)) {
+            /* TODO:いったんZOOM固定したまま。ユーザー操作値を保持して渡すべき。 */
             this.goalMarker = this.googleMap.addMarker(new MarkerOptions()
                     .position(position)
                     .icon(createSmallMarkerIcon(resId,MARKER_WIDTH_SIZE, MARKER_HEIGHT_SIZE))
@@ -97,8 +103,10 @@ public class MapController {
     /* API引数統一のため未使用引数含む */
     private void updateMarkerIcon(LatLng position, int resId, String markType) {
         if ("ccp".equals(markType)) {
+            /* TODO:いったんZOOM固定したまま。ユーザー操作値を保持して渡すべき。 */
             this.ccpMarker.setIcon(createSmallMarkerIcon(resId, MARKER_WIDTH_SIZE, MARKER_HEIGHT_SIZE));
         } else if ("goal".equals(markType)) {
+            /* TODO:いったんZOOM固定したまま。ユーザー操作値を保持して渡すべき。 */
             this.goalMarker.setIcon(createSmallMarkerIcon(resId, MARKER_WIDTH_SIZE, MARKER_HEIGHT_SIZE));
         } else {
             /* 処理なし */
