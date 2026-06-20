@@ -2,6 +2,7 @@ package com.example.myapplication;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -12,6 +13,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -36,7 +40,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     /* ToDo:GPS機能のための仮実装 */
     LatLng gpsCcpPosition;
 
+    /* ロケーション情報オブジェクト */
     LocationController locationController;
+
+    /* ロケーションコールバック(定期更新) */
+    private LocationCallback locationCallback;
 
     /* debugPanelクラス */
     private DebugPanelController debugPanelController;
@@ -71,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         /* GoogleMap描画準備 */
         this.initMap();
 
+        /* 現在地(GPS)更新コールバック */
+        this.setupLocationCallback();
+
         /* 設定ボタンリスナー */
         Button optionButton = findViewById(R.id.optionButton);
 
@@ -90,9 +101,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             /* debugボタンリスナー */
             Button debugButton = findViewById(R.id.debugButton);
 
-            debugButton.setOnClickListener(v -> {
-                this.debugPanelController.toggle();
-            });
+            debugButton.setOnClickListener(v ->
+                this.debugPanelController.toggle()
+            );
         }
     }
 
@@ -126,9 +137,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         /* ToDo:デフォルトで目的地描画しているが、将来的に不要の認識 */
         this.mapController.showGoalMarker(defaultGoalPosition,goalResId);
 
-        this.locationController = new LocationController(this);
         /* 現在地取得処理 */
+        this.locationController = new LocationController(this);
         this.fetchCurrentLocation();
+
+        /* 現在地更新処理 */
+        this.locationController.startLocationUpdates(locationCallback);
 
         /* debug機能有効時のみ */
         if( DEBUG_MAINACTIVITY_PANEL_ENABLED ) {
@@ -242,4 +256,51 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mapController.showCcpMarker(gpsCcpPosition, ccpResId);
         });
     }
+
+    /* 現在地(GPS)更新コールバック処理 */
+    private void setupLocationCallback() {
+        this.locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                Location location = locationResult.getLastLocation();
+
+                if (location == null) {
+                    return;
+                }
+
+                updateCurrentLocation(location);
+            }
+
+        };
+    }
+
+    /* 現在地(GPS)更新処理 */
+    private void updateCurrentLocation(Location location) {
+        this.gpsCcpPosition = new LatLng(
+                location.getLatitude(),
+                location.getLongitude()
+        );
+
+        int ccpResId = loadSelectedImage("ccp", "default_ccp");
+
+        this.mapController.moveToCurrentPosition(gpsCcpPosition);
+        this.mapController.showCcpMarker(gpsCcpPosition, ccpResId);
+
+        /* debug機能有効時のみ */
+        if( DEBUG_MAINACTIVITY_PANEL_ENABLED ) {
+            /* onMapReady Debug */
+            debugPanelController.updateDebugInfo(
+                    "setupLocationCallback",
+                    gpsCcpPosition,
+                    locationController,
+                    selectedCcpId,
+                    getSharedPreferences("app_settings", MODE_PRIVATE)
+                            .getString("ccp", "default_ccp"),
+                    selectedGoalId,
+                    getSharedPreferences("app_settings", MODE_PRIVATE)
+                            .getString("goal", "defaul_goalflag")
+            );
+        }
+    }
+
 }
