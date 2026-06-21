@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.nuinavi;
 
 import android.view.View;
 import android.widget.LinearLayout;

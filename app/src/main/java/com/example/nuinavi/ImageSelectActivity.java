@@ -1,7 +1,6 @@
-package com.example.myapplication;
+package com.example.nuinavi;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
@@ -15,7 +14,7 @@ import java.util.Map;
 
 public class ImageSelectActivity extends AppCompatActivity {
 
-    private Map<Integer,String> imageMap = new HashMap<>();
+    private final Map<Integer,String> imageMap = new HashMap<>();
 
     @Override
     /* イメージ選択画面Create */
